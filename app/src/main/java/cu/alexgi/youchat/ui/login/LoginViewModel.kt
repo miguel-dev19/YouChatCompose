@@ -1,4 +1,3 @@
-import kotlinx.coroutines.flow.asStateFlow
 package cu.alexgi.youchat.ui.login
 
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import cu.alexgi.youchat.data.remote.MailClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,9 @@ data class LoginUiState(
 )
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val mailClient: MailClient, private val preferences: YouChatPreferences) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val mailClient: MailClient, private val preferences: YouChatPreferences
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
     fun onEmailChange(e: String) { _uiState.update { it.copy(email = e, emailError = null) } }
