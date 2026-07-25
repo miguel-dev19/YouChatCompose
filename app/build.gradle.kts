@@ -80,7 +80,7 @@ dependencies {
     implementation("com.sun.mail:javax.mail:1.6.2")
     
     // BlurHash
-    implementation("org.bitbucket.b_c:blurhash:0.1.0")
+    // BlurHash removido (no disponible en Maven)
     
     // Debug
     debugImplementation("androidx.compose.ui:ui-tooling")
