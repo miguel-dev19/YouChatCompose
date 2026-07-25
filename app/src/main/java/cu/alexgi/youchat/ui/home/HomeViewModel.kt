@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(private val messageDao: MessageDao, priv
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     init {
         connectivityObserver.observe()
-        viewModelScope.launch { connectivityObserver.connectionState.collect { _uiState.update { it.copy(connectionState = it) } } }
+        viewModelScope.launch { connectivityObserver.connectionState.collect { _uiState.update { it.copy(connectionState = state) } } }
         viewModelScope.launch {
             messageDao.getAllChats().collect { usuarios ->
                 _uiState.update { it.copy(chats = usuarios.map { u -> val c = contactDao.getContact(u.correo); ChatPreview(nombre = c?.nombrePersonal?.ifEmpty { u.correo } ?: u.correo, correo = u.correo, lastMessage = when(u.ultMsgTipo){3,4->"📷 Imagen";7,8,9,10->"🎵 Audio";19,20->"😀 Sticker";13,14->"📎 Archivo";else->u.ultMsgTexto}, lastTime = u.ultMsgOrden, unreadCount = u.cantMsg, isMine = true, isAnclado = u.anclado, status = when(u.ultMsgEstado){1->"sending";2->"error";3->"sent";4->"delivered";5->"read";else->"sent"}) }, isLoading = false) }
